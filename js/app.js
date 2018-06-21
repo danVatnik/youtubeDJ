@@ -25,6 +25,7 @@ $(function() {
                         "title":item.snippet.title, 
                         "videoid":item.id.videoId, 
                         "image":item.snippet.thumbnails.medium.url,
+                        "onclickFunction":"addToPlaylist",
                         "id":item.id.videoId + "-search",
                         "channel":item.snippet.channelTitle,
                         "views": formatViews(result.items[0].statistics.viewCount)
@@ -94,7 +95,8 @@ function addToPlaylist(i){
     item = $("#" + i);
     $.get("item.html", function(data) {
         $("#playlist-items").append(tplawesome(data, [{"title":item.data('title'), 
-        "videoid":item.data('videoid'), 
+        "videoid":item.data('videoid'),
+        "onclickFunction":"setToPlayerOnItemClick",
         "image":item.data('image'),
         "id":item.data('videoid') + "-playlist",
         "channel":item.data('channel'),

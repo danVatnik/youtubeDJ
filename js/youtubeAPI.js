@@ -134,6 +134,7 @@
                         $(currentPlayerRelatedVideos).append(tplawesome(data, [{"title":item.snippet.title, 
                         "videoid":item.id.videoId, 
                         "image":item.snippet.thumbnails.medium.url,
+                        "onclickFunction":"addToPlaylist",
                         "id":item.id.videoId + "-search",
                         "channel":item.snippet.channelTitle,
                         "views": formatViews(result.items[0].statistics.viewCount)
@@ -183,17 +184,36 @@
   }
     }
 
+    function setToPlayerOnItemClick(id){
+        item = $("#" + id);
+        var chosenPlayer = "";
+
+        pl1State = player1.getPlayerState();
+        pl2State = player2.getPlayerState();
+
+        if(pl1State != YT.PlayerState.PLAYING){
+            setVideoInPlayerPanel(player1, $(item).data("videoid"));
+            setVideoInfo(item, "#player1-info");
+            item.remove();
+        }
+        else if(pl2State != YT.PlayerState.PLAYING){
+            setVideoInPlayerPanel(player2, $(item).data("videoid"));
+            setVideoInfo(item, "#player2-info");
+            item.remove();
+        }
+    }
+
     function setToPlayer(playerNumber){
         playlistItems = $("#playlist-items").children();
         if(playlistItems.length > 0){
             item = playlistItems[0];
             if(playerNumber == 1){
                 setVideoInPlayerPanel(player1, $(item).data("videoid"));
-                setVideoInfo(item, "#player1-info")
+                setVideoInfo(item, "#player1-info");
             }
             else if(playerNumber == 2){
                 setVideoInPlayerPanel(player2, $(item).data("videoid"));
-                setVideoInfo(item, "#player2-info")
+                setVideoInfo(item, "#player2-info");
             }
             item.remove();
         }
