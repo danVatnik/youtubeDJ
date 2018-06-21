@@ -39,6 +39,14 @@ $(function() {
 
     $(window).on("resize", resetVideoHeight);
 
+    $(window).on("resize", function(){
+        $("#player1").width($(".player1-column").width());
+        $("#player1").height($(".player1-column").width() * 9/16);
+        $("#player2").width($(".player2-column").width());
+        $("#player2").height($(".player2-column").width() * 9/16);
+    });
+
+
     $( ".sortable" ).sortable({
         placeholder: "ui-state-default"
         });

@@ -22,36 +22,37 @@
     </head>
     <body style="background-color: #222;">
         <div class="center-container">
-                <nav class="navbar navbar-dark bg-dark-primary" style="margin-bottom: 4px;">
-                    <a class="navbar-brand mb-0 h1" href="#">YouTube DJ</a>
-                    <form action="#" oninput="getSuggestions()" style="padding-left: 41px;">
-                        <div class="search-results" style="width:589px;">
-                            <input type="text" id="search" placeholder="Search video" autocomplete="off" class="form-control" />
-                            <div class="search-items"></div>
-                        </div>
-                    </form>
-                    <div id="results"></div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarText">
-                        <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Features</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Pricing</a>
-                        </li>
-                        </ul>
-                    </div>        
-                </nav>
+            <nav class="navbar navbar-dark bg-dark-primary" style="margin-bottom: 4px;">
+                <a class="navbar-brand mb-0 h1" href="#">YouTube DJ</a>
+                <form action="#" oninput="getSuggestions()" style="padding-left: 41px;">
+                    <div class="search-results" style="width:589px;">
+                        <input type="text" id="search" placeholder="Search video" autocomplete="off" class="form-control" />
+                        <div class="search-items"></div>
+                    </div>
+                </form>
+                <div id="results"></div>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    </ul>
+                </div>        
+            </nav>
             <div class="row">
                 <div class="col-md-8">
-                    <div class="row" style="width:1018px;">
-                        <div class="card text-white bg-dark" style="width: 1003px; margin-left: 15px;">
+                    <div class="row pb-6px">
+                        <div class="col-md-12 pr-0px">
+                        <div class="card text-white bg-dark">
                             <div class="card-header">
                                 <div class="row justify-content-between">
                                     <div class="col-md-3">
@@ -66,20 +67,21 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>           
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 player1-column pr-0px">
                             <div id="player1"></div>
-                                <div class="card text-white bg-dark"  style="width:500px">
+                                <div class="card text-white bg-dark">
                                     <div class="card-header bg-dark-primary">
                                         <div id="player1-info">Related Videos 1</div>
                                     </div>
                                     <div id=related-items-player-1 class="related-items"></div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 player2-column pr-0px">
                             <div id="player2"></div>
-                                <div class="card text-white bg-dark" style="width:500px">
+                                <div class="card text-white bg-dark">
                                     <div class="card-header bg-dark-primary">
                                         <div id="player2-info">Related Videos 2</div>
                                     </div>

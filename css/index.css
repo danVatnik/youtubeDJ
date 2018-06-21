@@ -73,6 +73,14 @@ body{
   padding-left: 10px;
 }
 
+.pr-0px{
+  padding-right: 0px;
+}
+
+.pb-6px{
+  padding-bottom: 6px;
+}
+
 .lh-1u15{
   line-height: 1.15;
 }

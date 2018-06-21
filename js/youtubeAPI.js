@@ -18,8 +18,8 @@
     
     function onYouTubeIframeAPIReady() {
         player1 = new YT.Player(player1Name, {
-            height: '281',
-            width: '500',
+            height: $(".player1-column").width() * 9/16,
+            width: $(".player1-column").width(),
             videoId: 'kJQP7kiw5Fk',
             events: {
             'onReady': onPlayerReady,
@@ -28,8 +28,8 @@
         });
 
         player2 = new YT.Player(player2Name, {
-            height: '281',
-            width: '500',
+            height: $(".player2-column").width() * 9/16,
+            width: $(".player2-column").width(),
             videoId: 'HCjNJDNzw8Y',
             events: {
             'onReady': onPlayerReady,
