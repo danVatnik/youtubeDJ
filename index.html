@@ -106,7 +106,7 @@
                             <div class="card-header">
                                 <div class="row justify-content-between">
 
-                                    <div class="col-md-5 offset-md-1">
+                                    <div class="col-md-5">
                                         <button type="button" class="btn btn-success w-100 bg-dark-success" onclick="switchPlayers()">Play Next</button>
                                     </div>
                                     <div class="col-md-5 offset-md-1">
@@ -141,7 +141,15 @@
                 <div class="col-md-4 pr-0px">
                     <div class="card text-white bg-dark" style="min-height:350px;">
                         <div class="card-header btn-dark-outline-success">
-                            <h5 class="card-title">Up next</h5>
+                            <div class="row justify-content-between">
+                                
+                                <div class="column-md-4">
+                                    <h5 class="card-title">Up next</h5>
+                                </div>
+                                <div class="column-md-4">
+                                    <button type="button" class="btn bg-dark-danger text-white" onclick="clearPlaylist('playlist-items')">Clear</button>
+                                </div>
+                            </div>
                         </div>
                         <ul class="list-group list-group-flush sortable" id="playlist-items">
                         </ul>

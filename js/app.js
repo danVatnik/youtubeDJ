@@ -209,3 +209,7 @@ function formatViews(val){
         return precisionVal[0] + precisionVal[2] + precisionVal[3] + "B";
     }
 }
+
+function clearPlaylist(id){
+    $("#" + id).html("");
+}
