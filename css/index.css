@@ -106,9 +106,18 @@ body{
   border-color: #00bc8c;
 }
 
-.bg-dark-danger{
-  background-color: #E74C3C;
+.border-dark-danger{
+  background-color: transparent;
   border-color: #E74C3C;
+}
+
+.border-dark-danger:hover{
+  background-color: #E74C3C;
+  color: #222;
+}
+
+.text-dark-danger{
+  color: #E74C3C
 }
 
 .btn-dark-outline-success {
