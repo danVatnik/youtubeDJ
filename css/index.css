@@ -85,6 +85,14 @@ body{
   line-height: 1.15;
 }
 
+.mt-5px{
+  margin-top: 5px;
+}
+
+.mb-5px{
+  margin-bottom: 5px;
+}
+
 .mb-7px{
   margin-bottom: 7px;
 }
