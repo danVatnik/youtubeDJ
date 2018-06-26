@@ -81,15 +81,14 @@ $(function() {
         $("#close-modal").click();
     });
 
+    $('body').click(function(){
+        $(".search-items").html("");
+    });
     
 });
 
 $(document).ready(function(){
     $(document).on("click", ".delete-item, .playlist-item", function(e){
-        //e.preventDefault();
-        //console.log(this.attr("itemId"));
-        //$("#" + this.attr("itemId")).remove();
-        //alert($("#" + this.id).attr('class'));
         if($("#" + this.id).length == 0){
             return;
         }
