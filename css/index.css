@@ -30,13 +30,13 @@ body{
     left: 0;
     right: 0;
   }
-  .search-item {
+  .item {
     padding: 10px;
     cursor: pointer;
     /* background-color: #fff;  */
     background-color: #343a40;
   }
-  .search-item:hover {
+  .item:hover {
     /*when hovering an item:*/
     background-color: #222; 
   }
