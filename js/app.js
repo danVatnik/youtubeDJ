@@ -1,8 +1,66 @@
 function tplawesome(e,t){res=e;for(var n=0;n<t.length;n++){res=res.replace(/\{\{(.*?)\}\}/g,function(e,r){return t[n][r]})}return res}
 
 $(function() {
+    var currentFocus = -1;
+    var areVideosDisplayed = false;
+    
+    function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("search-active");
+    }
+    function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+        x[i].classList.remove("search-active");
+        }
+    }
+
+    $("#search-videos-form").on("keydown", function(e) {
+        var x = document.getElementById("search-items");
+        if (x) {
+            if(areVideosDisplayed)
+                x = x.getElementsByClassName("search-item");
+            else
+                x = x.getElementsByClassName("suggestion-item");
+        }
+        if (e.keyCode == 40) {
+            currentFocus++;
+            addActive(x)
+            //$("#" + $("#" + $("#" + this.id).children().children()[1].id).children()[0].id).focus();
+        }else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+        } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if(currentFocus == -1)
+                $("#search").submit();
+            if (currentFocus > -1) {
+                /*and simulate a click on the "active" item:*/
+                if (x) {
+                    x[currentFocus].click();
+                    currentFocus = -1;
+                    areVideosDisplayed = true;
+                }
+            }
+        }
+        else{
+            areVideosDisplayed = false;
+        }
+    });
+
     $("#search-videos-form").on("submit", function(e) {
        e.preventDefault();
+       areVideosDisplayed = true;
        // prepare the request
        var request = gapi.client.youtube.search.list({
             part: 'snippet',
@@ -83,6 +141,8 @@ $(function() {
 
     $('body').click(function(){
         $(".search-items").html("");
+        areVideosDisplayed = false;
+        currentFocus = -1;
     });
     
 });
@@ -103,6 +163,7 @@ $(document).ready(function(){
         }
     });
 });
+
 
 function resetVideoHeight() {
     $(".video").css("height", $("#results").width() * 9/16);

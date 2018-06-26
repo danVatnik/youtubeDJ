@@ -40,9 +40,14 @@ body{
     /*when hovering an item:*/
     background-color: #222; 
   }
+
+  .item-active {
+    background-color: #e9e9e9; 
+  }
+
   .search-active {
     /*when navigating through the items using the arrow keys:*/
-    background-color: DodgerBlue !important; 
+    background-color: #222 !important; 
     color: #ffffff; 
   }
 
@@ -58,10 +63,12 @@ body{
 .suggestion-item {
   padding: 1px;
   cursor: pointer;
-  background-color: #fff; 
+  background-color: #343a40; 
+  color:#ffffff;
 }
 .suggestion-item:hover {
-  background-color: #e9e9e9; 
+  background-color: #222;
+  color: #ffffff; 
 }
 
 .no-padding{
