@@ -58,12 +58,12 @@ $(function() {
         
         e.preventDefault();
         //$('#exampleModal').modal('hide');
-        var url = "https://www.googleapis.com/youtube/v3/playlistItems?maxResults=25&part=snippet&playlistId=" + $("#playlist-URL").val().split("=")[1] + "&key=" + googleAPIKey;
+        var url = "https://www.googleapis.com/youtube/v3/playlistItems?maxResults=50&part=snippet&playlistId=" + $("#playlist-URL").val().split("=")[1] + "&key=" + googleAPIKey;
         $.ajax({url: url, success: function(result){
             $.each(result.items,function(index, item){
                 var urlStats = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + item.snippet.resourceId.videoId + "&key=" + googleAPIKey;
                 $.ajax({url: urlStats, success: function(stats){
-                $.get("item.html", function(data) {
+                $.get("playlistItem.html", function(data) {
                 $("#playlist-items").append(tplawesome(data, [{
                     "title":item.snippet.title, 
                     "videoid":item.snippet.resourceId.videoId, 
