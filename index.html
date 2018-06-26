@@ -26,8 +26,8 @@
                     <div class="col-md-1">
                 <a class="navbar-brand mb-0 h1" href="#">YouTube DJ</a>
                 </div>
-                <div class="col-md-10">
-                <form action="#" oninput="getSuggestions()" style="padding-left: 41px;">
+                <div class="col-md-8">
+                <form id="search-videos-form" action="#" oninput="getSuggestions()" style="padding-left: 41px;">
                     <div class="search-results" style="width:50%;">
                         <input type="text" id="search" placeholder="Search video" autocomplete="off" class="form-control" />
                         <div class="search-items"></div>
@@ -35,40 +35,82 @@
                 </form>
                 <div id="results"></div>
                 </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Load Youtube Playlist
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Load Youtube Playlist</h5>
+                                    <button id="close-modal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="input-group mb-3">
+                                                    <form style="width: 100%;" id="load-playlist-form">
+                                                        <input id="playlist-URL" style="width:100%" type="text" class="form-control" placeholder="Youtube Playlist URL" aria-label="Username" aria-describedby="basic-addon1">
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                <!-- <button id="close-modal" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-1">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarText">
-                    <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
-                    </li>
-                    </ul>
-                </div>  
-            </div>      
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarText">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Features</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Pricing</a>
+                            </li>
+                        </ul>
+                    </div>  
+                </div>      
             </nav>
             <div class="row">
                 <div class="col-md-8">
                     <div class="row pb-6px">
-                        <div class="col-md-12 pr-0px">
+                        <div class="col-md-6 pr-0px">
+                                <div class="card text-white bg-dark text-center">
+                                        <div class="card-header  btn-dark-outline-danger">
+                                            <!-- <div class="row justify-content-between"> -->
+                                                <h4 class="card-title"><b>Playing</b></h4>
+                                                <!-- </div> -->
+                                                </div>
+                                                </div>
+                        </div>
+                        <div class="col-md-6 pr-0px">
                         <div class="card text-white bg-dark">
                             <div class="card-header">
                                 <div class="row justify-content-between">
-                                    <div class="col-md-3">
-                                        <button type="button" class="btn btn-primary w-100" onclick="setToPlayer('1')">One</button>
+
+                                    <div class="col-md-5 offset-md-1">
+                                        <button type="button" class="btn btn-success w-100 bg-dark-success" onclick="switchPlayers()">Play Next</button>
                                     </div>
-                                    <div class="col-md-3 offset-md-1">
-                                        <button type="button" class="btn btn-success w-100 bg-dark-success" onclick="switchPlayers()">Switch</button>
-                                    </div>
-                                    <div class="col-md-3 offset-md-1">
-                                        <button type="button" class="btn btn-primary w-100" onclick="setToPlayer('2')">Two</button>
+                                    <div class="col-md-5 offset-md-1">
+                                        <button type="button" class="btn btn-primary w-100" onclick="setToPlayer()">Load Next</button>
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +118,7 @@
                     </div>
                     </div>           
                     <div class="row">
-                        <div class="col-md-6 player1-column pr-0px">
+                        <div class="col-md-6 player1-column pr-0px" style="position:relative;">
                             <div id="player1"></div>
                                 <div class="card text-white bg-dark">
                                     <div class="card-header bg-dark-primary">
@@ -85,7 +127,7 @@
                                     <div id=related-items-player-1 class="related-items"></div>
                             </div>
                         </div>
-                        <div class="col-md-6 player2-column pr-0px">
+                        <div class="col-md-6 player2-column pr-0px" style="position:relative;">
                             <div id="player2"></div>
                                 <div class="card text-white bg-dark">
                                     <div class="card-header bg-dark-primary">

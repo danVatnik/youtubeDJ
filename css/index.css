@@ -89,6 +89,14 @@ body{
   margin-bottom: 7px;
 }
 
+.ml-10px{
+  margin-left: 10px;
+}
+
+.mr-4px{
+  margin-right: 4px;
+}
+
 .bg-dark-primary{
   background-color: #375a7f !important;
 }
@@ -103,4 +111,10 @@ body{
   background-color: transparent;
   background-image: none;
   border-color: #00bc8c;
+}
+
+.btn-dark-outline-danger {
+  color: #E74C3C;
+  background-color: transparent;
+  background-image: none;
 }

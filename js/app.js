@@ -1,7 +1,7 @@
 function tplawesome(e,t){res=e;for(var n=0;n<t.length;n++){res=res.replace(/\{\{(.*?)\}\}/g,function(e,r){return t[n][r]})}return res}
 
 $(function() {
-    $("form").on("submit", function(e) {
+    $("#search-videos-form").on("submit", function(e) {
        e.preventDefault();
        // prepare the request
        var request = gapi.client.youtube.search.list({
@@ -20,7 +20,7 @@ $(function() {
               
             var url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + item.id.videoId + "&key=" + googleAPIKey;
             $.ajax({url: url, success: function(result){
-                $.get("item.html", function(data) {
+                $.get("searchItem.html", function(data) {
                     $(".search-items").append(tplawesome(data, [{
                         "title":item.snippet.title, 
                         "videoid":item.id.videoId, 
@@ -42,6 +42,8 @@ $(function() {
     $(window).on("resize", function(){
         $("#player1").width($(".player1-column").width());
         $("#player1").height($(".player1-column").width() * 9/16);
+        $("#player1").css("left", ($("." + "player1-column").position().left) + "px");
+
         $("#player2").width($(".player2-column").width());
         $("#player2").height($(".player2-column").width() * 9/16);
     });
@@ -51,8 +53,57 @@ $(function() {
         placeholder: "ui-state-default"
         });
         $( ".sortable" ).disableSelection();
+
+    $("#load-playlist-form").on("submit", function(e) {
+        
+        e.preventDefault();
+        //$('#exampleModal').modal('hide');
+        var url = "https://www.googleapis.com/youtube/v3/playlistItems?maxResults=25&part=snippet&playlistId=" + $("#playlist-URL").val().split("=")[1] + "&key=" + googleAPIKey;
+        $.ajax({url: url, success: function(result){
+            $.each(result.items,function(index, item){
+                var urlStats = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + item.snippet.resourceId.videoId + "&key=" + googleAPIKey;
+                $.ajax({url: urlStats, success: function(stats){
+                $.get("item.html", function(data) {
+                $("#playlist-items").append(tplawesome(data, [{
+                    "title":item.snippet.title, 
+                    "videoid":item.snippet.resourceId.videoId, 
+                    "image":item.snippet.thumbnails.medium.url,
+                    "onclickFunction":"setToPlayerOnItemClick",
+                    "id":item.id.videoId + "-search",
+                    "channel":item.snippet.channelTitle,
+                    "views": formatViews(stats.items[0].statistics.viewCount)
+                }]));
+            });
+        }});
+        });
+        }});
+        
+        $("#close-modal").click();
+    });
+
+    
 });
 
+$(document).ready(function(){
+    $(document).on("click", ".delete-item, .playlist-item", function(e){
+        //e.preventDefault();
+        //console.log(this.attr("itemId"));
+        //$("#" + this.attr("itemId")).remove();
+        //alert($("#" + this.id).attr('class'));
+        if($("#" + this.id).length == 0){
+            return;
+        }
+
+        if(this.type == "button"){
+            if ($("#" + this.id).attr('class').split(" ")[1] == 'delete-item') {
+                $("#" + $("#" + this.id).data("itemid")).remove();
+            }
+        }
+        else if ($("#" + this.id).attr('class').split(" ")[0] == 'playlist-item') {
+            setToPlayerOnItemClick(this.id);
+        }
+    });
+});
 
 function resetVideoHeight() {
     $(".video").css("height", $("#results").width() * 9/16);
@@ -101,7 +152,7 @@ function addToPlaylist(i){
     console.log(i);
     console.log($("#" + i).data("title"));
     item = $("#" + i);
-    $.get("item.html", function(data) {
+    $.get("playlistItem.html", function(data) {
         $("#playlist-items").append(tplawesome(data, [{"title":item.data('title'), 
         "videoid":item.data('videoid'),
         "onclickFunction":"setToPlayerOnItemClick",

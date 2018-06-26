@@ -1,0 +1,20 @@
+<div class="playlist-item" id="{{id}}"
+data-videoid={{videoid}} data-image={{image}} data-title="{{title}}" data-channel="{{channel}}"
+data-views={{views}}>
+    <div class="text-white video-item">
+        <div class="col-md-5 no-padding">
+            <img src={{image}} class="img-fluid" alt="Responsive image" style="width:200px;height:113px;">
+        </div>
+        <div class="col-md-7 no-padding pl-10px">
+                <button id="{{id}}-remove-button" type="button" class="close delete-item text-white ml-10px mr-4px" data-itemId={{id}} aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            <p class="font-weight-bold lh-1u15 mb-7px">
+                {{title}}
+            </p>
+            <p class="text-secondary lg-1u15 mb-7px">{{channel}}</p>
+            <p class="text-secondary lg-1u15">{{views}} views</p>
+
+        </div>
+    </div>
+</div>

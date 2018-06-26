@@ -1,9 +1,12 @@
     var player1Name = 'player1';
     var player2Name = 'player2';
+    //var player2Name = 'player3';
     var player1;
     var player2;
     var firstLoadOfVideoPlayer1 = true;
     var firstLoadOfVideoPlayer2 = true;
+
+    var playerOnTheLeft = player1Name;
 
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
@@ -56,7 +59,7 @@
     // 5. The API calls this function when the player's state changes.
     //    The function indicates that when playing a video (state=1),
     //    the player should play for six seconds and then stop.
-    var done = false;
+
     function onPlayerStateChange(event) {
         if (event.data == YT.PlayerState.PLAYING) {
             if(event.target == player1 && firstLoadOfVideoPlayer1){
@@ -69,17 +72,21 @@
             }
         }
         if (event.data == YT.PlayerState.ENDED || event.data == YT.PlayerState.ERROR){
-            setNextVideoFromPlaylistToPlayer(event.target)
+            //setNextVideoFromPlaylistToPlayer(event.target)
+            switchPlayers(event.target);
         }
     }
 
     function setNextVideoFromPlaylistToPlayer(player){
         var currentPlayerInfo = "";
+        var currentPlayerRelatedVideos = "";
         if(player == player1){
             currentPlayerInfo = "#player1-info";
+            currentPlayerRelatedVideos = "#related-items-player-1";
         }
         else{
             currentPlayerInfo = "#player2-info";
+            currentPlayerRelatedVideos = "#related-items-player-2";
         }
         playlistItems = $("#playlist-items").children();
         if(playlistItems.length > 0){
@@ -87,6 +94,15 @@
             setVideoInPlayerPanel(player, $(item).data("videoid"));
             setVideoInfo(item, currentPlayerInfo);
             item.remove()
+        }
+        else{
+            playlistItems = $(currentPlayerRelatedVideos).children();
+            if(playlistItems.length > 0 ){
+                item = playlistItems[4];
+                setVideoInPlayerPanel(player, $(item).data("videoid"));
+                setVideoInfo(item, currentPlayerInfo);
+                item.remove()
+            }
         }
     }
 
@@ -130,7 +146,7 @@
                 console.log(item);
                 var url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + item.id.videoId + "&key=" + googleAPIKey;
                 $.ajax({url: url, success: function(result){
-                    $.get("item.html", function(data) {
+                    $.get("relatedItem.html", function(data) {
                         $(currentPlayerRelatedVideos).append(tplawesome(data, [{"title":item.snippet.title, 
                         "videoid":item.id.videoId, 
                         "image":item.snippet.thumbnails.medium.url,
@@ -146,20 +162,62 @@
         });
     }
 
-    function switchPlayers(){
+    function switchPlayers(origin){
         pl1State = player1.getPlayerState();
         pl2State = player2.getPlayerState();
 
-        if(pl1State == YT.PlayerState.PLAYING){
+        if(pl1State == YT.PlayerState.PLAYING || origin == player1){
             player2.playVideo();
             //player2.unmute();
             basculateVolume(player1, player2);
-
+            slidePlayers();
         }
-        else if(pl2State == YT.PlayerState.PLAYING){
+        else if(pl2State == YT.PlayerState.PLAYING || origin == player2){
             player1.playVideo();
             //player1.unmute();
             basculateVolume(player2, player1);
+            slidePlayers();
+        }
+        else if(playerOnTheLeft == player1Name){
+            player2.playVideo();
+            basculateVolume(player1, player2);
+            slidePlayers();
+        }
+        else if(playerOnTheLeft == player2Name){
+            player1.playVideo();
+            basculateVolume(player2, player1);
+            slidePlayers();
+        }
+
+    }
+
+    function slidePlayers(){
+        var transitionSpeed = 5000;
+        // player 1 on the left
+        if(playerOnTheLeft == player1Name){
+
+            $("." + "player2-column").animate({left: -$(".player2-column").outerWidth() + "px"}, transitionSpeed);
+            
+            $("." + "player1-column").animate({left: -$(".player1-column").outerWidth() + "px", opacity: '0'}, {
+                duration: transitionSpeed,
+                complete: function(){
+                    $("." + "player1-column").css("left", ($("." + "player1-column").position().left + 3 * $(".player1-column").outerWidth()) + "px");
+                    $("." + "player1-column").animate({left: $(".player1-column").outerWidth() + "px", opacity: '1'}, "slow");
+                }    
+            });
+            playerOnTheLeft = player2Name;
+        }
+        else{
+            // player 2 on the left
+            $("." + "player1-column").animate({left: 0 + "px"}, transitionSpeed);
+            $("." + "player2-column").animate({left: 2 * -$(".player2-column").outerWidth() + "px", opacity: '0'}, {
+                duration: transitionSpeed,
+                complete: function(){
+                    $("." + "player2-column").css("left", ($("." + "player2-column").position().left + 2 * $(".player1-column").outerWidth()) + "px");
+                    $("." + "player2-column").animate({left: 0 + "px", opacity: '1'}, "slow");
+                }    
+            });
+            playerOnTheLeft = player1Name;
         }
     }
 
@@ -171,7 +229,7 @@
     }
     
     function setVolumes(playerEnding, playerStarting, index, maxVolume){
-        if (index == maxVolume) {
+        if (index >= maxVolume) {
             playerEnding.stopVideo();
             playerEnding.unMute();
             setNextVideoFromPlaylistToPlayer(playerEnding);
@@ -180,7 +238,7 @@
             playerEnding.setVolume(maxVolume - index);
             return setTimeout((function() {
                 return setVolumes(playerEnding, playerStarting, index + 1, maxVolume);
-            }), 75);
+            }), 50);
   }
     }
 
@@ -203,17 +261,17 @@
         }
     }
 
-    function setToPlayer(playerNumber){
+    function setToPlayer(){
         playlistItems = $("#playlist-items").children();
         if(playlistItems.length > 0){
             item = playlistItems[0];
-            if(playerNumber == 1){
-                setVideoInPlayerPanel(player1, $(item).data("videoid"));
-                setVideoInfo(item, "#player1-info");
-            }
-            else if(playerNumber == 2){
+            if(playerOnTheLeft == player1Name){
                 setVideoInPlayerPanel(player2, $(item).data("videoid"));
                 setVideoInfo(item, "#player2-info");
+            }
+            else if(playerOnTheLeft == player2Name){
+                setVideoInPlayerPanel(player1, $(item).data("videoid"));
+                setVideoInfo(item, "#player1-info");
             }
             item.remove();
         }
