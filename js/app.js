@@ -107,10 +107,8 @@ $(function() {
     });
 
 
-    $( ".sortable" ).sortable({
-        placeholder: "ui-state-default"
-        });
-        $( ".sortable" ).disableSelection();
+    $("#playlist-items").sortable();
+    $("#playlist-items").disableSelection();
 
     $("#load-playlist-form").on("submit", function(e) {
         
