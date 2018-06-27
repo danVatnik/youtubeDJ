@@ -108,6 +108,14 @@ body{
   margin-left: 10px;
 }
 
+.ml-68px{
+  margin-left: 68px;
+}
+
+.ml-3em{
+  margin-left: -3em;
+}
+
 .mr-4px{
   margin-right: 4px;
 }
@@ -147,3 +155,8 @@ body{
   background-color: transparent;
   background-image: none;
 }
+
+.fa-level-down-alt{
+  transform: scaleX(-1);
+}
+

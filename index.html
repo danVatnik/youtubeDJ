@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
@@ -25,27 +26,31 @@
         <div class="center-container">
             <nav class="navbar navbar-dark bg-dark-primary" style="margin-bottom: 4px;">
                     <div class="col-md-1">
-                <a class="navbar-brand mb-0 h1" href="#">YouTube DJ</a>
+                <a class="navbar-brand mb-0 h1" href="#">MC YouTube</a>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-5">
                 <form id="search-videos-form" action="#" oninput="getSuggestions()" style="padding-left: 41px;">
-                    <div class="search-results" style="width:50%;">
+                    <div class="search-results" style="width:100%;">
                         <input type="text" id="search" placeholder="Search video" autocomplete="off" class="form-control" />
                         <div id="search-items" class="search-items"></div>
                     </div>
                 </form>
                 <div id="results"></div>
                 </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Load Youtube Playlist
-                    </button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                
+                <div class="col-md-4">
+                    <!-- <h5 class="text-white mb-0">
+                        Non-stop Youtube music
+                    </h5> -->
+                    <button type="button" class="btn border-dark-danger text-dark-danger ml-3em" data-toggle="modal" data-target="#help-modal">
+                            Help
+                        </button>
+                    <!-- Import Youtube Playlist Modal -->
+                    <div class="modal fade" id="youtube-playlist-modal" tabindex="-1" role="dialog" aria-labelledby="youtube-playlist-modal-label" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Load Youtube Playlist</h5>
+                                    <h5 class="modal-title" id="youtube-playlist-modal-label">Load Youtube Playlist</h5>
                                     <button id="close-modal" type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -70,6 +75,52 @@
                             </div>
                         </div>
                     </div>
+
+            <!-- Help Modal -->
+            <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="help-modal-label" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content text-white bg-dark">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="help-modal-label">MC Youtube - Seamless Transitions</h5>
+                                <button id="close-modal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                                <ul class="list-group text-white bg-dark">
+                                                        <li class="list-group-item text-light bg-dark border-white">
+                                                            <h4 class="" style="color:#007bff">Searhing Videos</h4>
+                                                            <p class="mb-1">Search for videos in the search bar or select related videos from currently loaded videos.</p>
+                                                        </li>
+                                                        <li class="list-group-item text-white bg-dark border-white">
+                                                            <h4 class="" style="color:#00bc8c">Creating the Playlist</h4>
+                                                            <p class="mb-1">Selected videos will be added to the playlist. Videos can be sorted and deleted.</p>
+                                                            <p class="mb-1">A YouTube playlist can be imported via its URL.</p>
+                                                        </li>
+                                                        <li class="list-group-item text-white bg-dark border-white">
+                                                            <h4 class="" style="color:#E74C3C">Playing Videos</h4>
+                                                            <p class="mb-1">Press <b style="color:#00bc8c">Play Next</b> to play the first video or to transition to next video.</p>
+                                                            <p class="mb-1">Press <b style="color:#007bff">Load Next</b> to load the next video. Only required to skip a video.</p>
+                                                        </li>
+                                                        
+
+                                                        </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            <button id="close-modal" type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 </div>
                 <div class="col-md-1">
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,10 +159,10 @@
                                 <div class="row justify-content-between">
 
                                     <div class="col-md-5">
-                                        <button type="button" class="btn btn-success w-100 bg-dark-success" onclick="switchPlayers()">Play Next</button>
+                                        <button type="button" class="btn btn-success w-100 bg-dark-success" onclick="switchPlayers()">Play Next <i class="fas fa-backward ml-10px"></i></button>
                                     </div>
                                     <div class="col-md-5 offset-md-1">
-                                        <button type="button" class="btn btn-primary w-100" onclick="setToPlayer()">Load Next</button>
+                                        <button type="button" class="btn btn-primary w-100" onclick="setToPlayer()">Load Next <i class="fas fa-level-down-alt ml-10px"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +197,13 @@
                                 <div class="column-md-4">
                                     <h4 class="card-title ml-10px mt-5px mb-5px">Up next</h4>
                                 </div>
-                                <div class="column-md-4">
+                                <div class="column-md-4"></div>
+                                <div class="column-md-2">
+                                    <button type="button" class="btn btn-outline-primary ml-68px" data-toggle="modal" data-target="#youtube-playlist-modal">
+                                        Load Youtube Playlist
+                                    </button>
+                                </div>
+                                <div class="column-md-2">
                                     <button type="button" class="btn border-dark-danger text-dark-danger" onclick="clearPlaylist('playlist-items')">Clear</button>
                                 </div>
                             </div>
