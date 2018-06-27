@@ -11,6 +11,8 @@
 
     var playerOnTheLeft = player1Name;
 
+    var switchingPlayers = false; 
+
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
     
@@ -74,11 +76,11 @@
                 event.target.pauseVideo();
             }
             else{
-                if(event.target == player1){
+                if(event.target == player1 && !player1CheckInProgress){
                     checkForEndOfSong(event.target, event.target.getDuration(), player1CheckInProgress);
                     player1CheckInProgress = true;
                 }
-                else if(event.target == player2){
+                else if(event.target == player2 && !player2CheckInProgress){
                     checkForEndOfSong(event.target, event.target.getDuration(), player2CheckInProgress);
                     player2CheckInProgress = true;
                 }
@@ -86,7 +88,7 @@
             }
             //startWorker();
         }
-        if (event.data == YT.PlayerState.ENDED || event.data == YT.PlayerState.ERROR){
+        if ((event.data == YT.PlayerState.ENDED || event.data == YT.PlayerState.ERROR) && !switchingPlayers){
             //setNextVideoFromPlaylistToPlayer(event.target)
             switchPlayers(event.target);
         }
@@ -95,7 +97,7 @@
     function checkForEndOfSong(player, duration, checkInProgress){
         if(checkInProgress)
             return;
-        if ((duration - player.getCurrentTime()) <= 12) {
+        if ((duration - player.getCurrentTime()) <= 15) {
             switchPlayers(player);
             return;
         } else {
@@ -128,7 +130,7 @@
         else{
             playlistItems = $(currentPlayerRelatedVideos).children();
             if(playlistItems.length > 0 ){
-                item = playlistItems[4];
+                item = playlistItems[3];
                 setVideoInPlayerPanel(player, $(item).data("videoid"));
                 setVideoInfo(item, currentPlayerInfo);
                 item.remove()
@@ -194,6 +196,7 @@
 
     function switchPlayers(origin){
 
+        switchingPlayers = true;
         $("#switch-players-button").prop('disabled', true);
         $("#load-video-button").prop('disabled', true);
 
@@ -239,6 +242,7 @@
                     $("." + "player1-column").animate({left: $(".player1-column").outerWidth() + "px", opacity: '1'},{
                         duration:"slow",
                         complete: function(){
+                            switchingPlayers = false;
                             $("#switch-players-button").prop('disabled', false);
                             $("#load-video-button").prop('disabled', false);
                         }
@@ -258,6 +262,7 @@
                     {
                         duration:"slow",
                         complete: function(){
+                            switchingPlayers = false;
                             $("#switch-players-button").prop('disabled', false);
                             $("#load-video-button").prop('disabled', false);
                         }
