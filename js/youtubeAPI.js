@@ -6,6 +6,9 @@
     var firstLoadOfVideoPlayer1 = true;
     var firstLoadOfVideoPlayer2 = true;
 
+    var player1CheckInProgress = false;
+    var player2CheckInProgress = false;
+
     var playerOnTheLeft = player1Name;
 
     // 2. This code loads the IFrame Player API code asynchronously.
@@ -70,10 +73,35 @@
                 firstLoadOfVideoPlayer2 = false;
                 event.target.pauseVideo();
             }
+            else{
+                if(event.target == player1){
+                    checkForEndOfSong(event.target, event.target.getDuration(), player1CheckInProgress);
+                    player1CheckInProgress = true;
+                }
+                else if(event.target == player2){
+                    checkForEndOfSong(event.target, event.target.getDuration(), player2CheckInProgress);
+                    player2CheckInProgress = true;
+                }
+                console.log(event.target.getDuration());
+            }
+            //startWorker();
         }
         if (event.data == YT.PlayerState.ENDED || event.data == YT.PlayerState.ERROR){
             //setNextVideoFromPlaylistToPlayer(event.target)
             switchPlayers(event.target);
+        }
+    }
+    
+    function checkForEndOfSong(player, duration, checkInProgress){
+        if(checkInProgress)
+            return;
+        if ((duration - player.getCurrentTime()) <= 12) {
+            switchPlayers(player);
+            return;
+        } else {
+            return setTimeout((function() {
+                return checkForEndOfSong(player, duration);
+            }), 1000);
         }
     }
 
@@ -83,10 +111,12 @@
         if(player == player1){
             currentPlayerInfo = "#player1-info";
             currentPlayerRelatedVideos = "#related-items-player-1";
+            player1CheckInProgress = false;
         }
         else{
             currentPlayerInfo = "#player2-info";
             currentPlayerRelatedVideos = "#related-items-player-2";
+            player2CheckInProgress = false;
         }
         playlistItems = $("#playlist-items").children();
         if(playlistItems.length > 0){
@@ -285,4 +315,27 @@
                 "views": $(item).data("views")
             }]));
         });
+    }
+
+    function startWorker() {
+        if(typeof(Worker) !== "undefined") {
+            if(typeof(w) == "undefined") {
+                w = new Worker("/js/triggerSongEnd.js");
+
+                if(playerOnTheLeft == player1Name)
+                    w.postMessage(player1);
+                else
+                w.postMessage(player2);
+            }
+            // w.onmessage = function(event) {
+            //     //document.getElementById("result").innerHTML = event.data;
+            // };
+        } else {
+            //document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Workers...";
+        }
+    }
+    
+    function stopWorker() { 
+        w.terminate();
+        w = undefined;
     }
