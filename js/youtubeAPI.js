@@ -193,6 +193,10 @@
     }
 
     function switchPlayers(origin){
+
+        $("#switch-players-button").prop('disabled', true);
+        $("#load-video-button").prop('disabled', true);
+
         pl1State = player1.getPlayerState();
         pl2State = player2.getPlayerState();
 
@@ -200,23 +204,23 @@
             player2.playVideo();
             //player2.unmute();
             basculateVolume(player1, player2);
-            slidePlayers();
+            //slidePlayers();
         }
         else if(pl2State == YT.PlayerState.PLAYING || origin == player2){
             player1.playVideo();
             //player1.unmute();
             basculateVolume(player2, player1);
-            slidePlayers();
+            //slidePlayers();
         }
         else if(playerOnTheLeft == player1Name){
             player2.playVideo();
             basculateVolume(player1, player2);
-            slidePlayers();
+            //slidePlayers();
         }
         else if(playerOnTheLeft == player2Name){
             player1.playVideo();
             basculateVolume(player2, player1);
-            slidePlayers();
+            //slidePlayers();
         }
 
     }
@@ -232,7 +236,13 @@
                 duration: transitionSpeed,
                 complete: function(){
                     $("." + "player1-column").css("left", ($("." + "player1-column").position().left + 3 * $(".player1-column").outerWidth()) + "px");
-                    $("." + "player1-column").animate({left: $(".player1-column").outerWidth() + "px", opacity: '1'}, "slow");
+                    $("." + "player1-column").animate({left: $(".player1-column").outerWidth() + "px", opacity: '1'},{
+                        duration:"slow",
+                        complete: function(){
+                            $("#switch-players-button").prop('disabled', false);
+                            $("#load-video-button").prop('disabled', false);
+                        }
+                    });
                 }    
             });
             playerOnTheLeft = player2Name;
@@ -244,7 +254,14 @@
                 duration: transitionSpeed,
                 complete: function(){
                     $("." + "player2-column").css("left", ($("." + "player2-column").position().left + 2 * $(".player1-column").outerWidth()) + "px");
-                    $("." + "player2-column").animate({left: 0 + "px", opacity: '1'}, "slow");
+                    $("." + "player2-column").animate({left: 0 + "px", opacity: '1'}, 
+                    {
+                        duration:"slow",
+                        complete: function(){
+                            $("#switch-players-button").prop('disabled', false);
+                            $("#load-video-button").prop('disabled', false);
+                        }
+                    });
                 }    
             });
             playerOnTheLeft = player1Name;
@@ -259,17 +276,32 @@
     }
     
     function setVolumes(playerEnding, playerStarting, index, maxVolume){
+        if(index >= maxVolume){
+            setVolumePlayerEnding(playerEnding, 1, maxVolume);
+            slidePlayers();
+            return;
+        }
+        else{
+            playerStarting.setVolume(index);
+            return setTimeout((function() {
+                return setVolumes(playerEnding, playerStarting, index + 1, maxVolume);
+            }), 40);
+        }  
+    }
+
+    function setVolumePlayerEnding(playerEnding, index, maxVolume){
         if (index >= maxVolume) {
             playerEnding.stopVideo();
             playerEnding.unMute();
             setNextVideoFromPlaylistToPlayer(playerEnding);
             return;
-        } else {
+        }
+        else {
             playerEnding.setVolume(maxVolume - index);
             return setTimeout((function() {
-                return setVolumes(playerEnding, playerStarting, index + 1, maxVolume);
-            }), 50);
-  }
+                return setVolumePlayerEnding(playerEnding, index + 1, maxVolume);
+            }), 40);
+        }
     }
 
     function setToPlayerOnItemClick(id){
