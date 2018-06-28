@@ -102,7 +102,7 @@
             return;
         } else {
             return setTimeout((function() {
-                return checkForEndOfSong(player, duration);
+                return checkForEndOfSong(player, duration, checkInProgress);
             }), 1000);
         }
     }
@@ -120,9 +120,9 @@
             currentPlayerRelatedVideos = "#related-items-player-2";
             player2CheckInProgress = false;
         }
-        playlistItems = $("#playlist-items").children();
+        var playlistItems = $("#playlist-items").children();
         if(playlistItems.length > 0){
-            item = playlistItems[0];
+            var item = playlistItems[0];
             setVideoInPlayerPanel(player, $(item).data("videoid"));
             setVideoInfo(item, currentPlayerInfo);
             item.remove()
@@ -130,7 +130,7 @@
         else{
             playlistItems = $(currentPlayerRelatedVideos).children();
             if(playlistItems.length > 0 ){
-                item = playlistItems[3];
+                var item = playlistItems[3];
                 setVideoInPlayerPanel(player, $(item).data("videoid"));
                 setVideoInfo(item, currentPlayerInfo);
                 item.remove()
@@ -200,22 +200,23 @@
         $("#switch-players-button").prop('disabled', true);
         $("#load-video-button").prop('disabled', true);
 
-        pl1State = player1.getPlayerState();
-        pl2State = player2.getPlayerState();
+        var pl1State = player1.getPlayerState();
+        var pl2State = player2.getPlayerState();
 
-        if(pl1State == YT.PlayerState.PLAYING || origin == player1){
-            player2.playVideo();
-            //player2.unmute();
-            basculateVolume(player1, player2);
-            //slidePlayers();
-        }
-        else if(pl2State == YT.PlayerState.PLAYING || origin == player2){
-            player1.playVideo();
-            //player1.unmute();
-            basculateVolume(player2, player1);
-            //slidePlayers();
-        }
-        else if(playerOnTheLeft == player1Name){
+        // if(pl1State == YT.PlayerState.PLAYING || origin == player1){
+        //     player2.playVideo();
+        //     //player2.unmute();
+        //     basculateVolume(player1, player2);
+        //     //slidePlayers();
+        // }
+        // else if(pl2State == YT.PlayerState.PLAYING || origin == player2){
+        //     player1.playVideo();
+        //     //player1.unmute();
+        //     basculateVolume(player2, player1);
+        //     //slidePlayers();
+        // }
+        // else 
+        if(playerOnTheLeft == player1Name){
             player2.playVideo();
             basculateVolume(player1, player2);
             //slidePlayers();
@@ -275,7 +276,7 @@
 
     function basculateVolume(playerEnding, playerStarting){
         var maxVolume = playerEnding.getVolume();
-        playerStarting.setVolume(maxVolume);
+        //playerStarting.setVolume(maxVolume);
         setVolumes(playerEnding, playerStarting, 1, maxVolume);
 
     }
@@ -313,8 +314,8 @@
         item = $("#" + id);
         var chosenPlayer = "";
 
-        pl1State = player1.getPlayerState();
-        pl2State = player2.getPlayerState();
+        var pl1State = player1.getPlayerState();
+        var pl2State = player2.getPlayerState();
 
         if(pl1State != YT.PlayerState.PLAYING){
             setVideoInPlayerPanel(player1, $(item).data("videoid"));
@@ -354,25 +355,25 @@
         });
     }
 
-    function startWorker() {
-        if(typeof(Worker) !== "undefined") {
-            if(typeof(w) == "undefined") {
-                w = new Worker("/js/triggerSongEnd.js");
+    // function startWorker() {
+    //     if(typeof(Worker) !== "undefined") {
+    //         if(typeof(w) == "undefined") {
+    //             w = new Worker("/js/triggerSongEnd.js");
 
-                if(playerOnTheLeft == player1Name)
-                    w.postMessage(player1);
-                else
-                w.postMessage(player2);
-            }
-            // w.onmessage = function(event) {
-            //     //document.getElementById("result").innerHTML = event.data;
-            // };
-        } else {
-            //document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Workers...";
-        }
-    }
+    //             if(playerOnTheLeft == player1Name)
+    //                 w.postMessage(player1);
+    //             else
+    //             w.postMessage(player2);
+    //         }
+    //         // w.onmessage = function(event) {
+    //         //     //document.getElementById("result").innerHTML = event.data;
+    //         // };
+    //     } else {
+    //         //document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Workers...";
+    //     }
+    // }
     
-    function stopWorker() { 
-        w.terminate();
-        w = undefined;
-    }
+    // function stopWorker() { 
+    //     w.terminate();
+    //     w = undefined;
+    // }
